@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <title>Spring Boot JSF PrimeFaces JPA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+</h:head>
+<h:body class="body">
+    <h:form id="form">
+        <p:commandButton id="dynaButton" value="Pages" type="button" icon="pi pi-home"/>
+        <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+            <p:menuitem value="Department" url="department.xhtml"/>
+        </p:tieredMenu>
+
+
+        <p:panelGrid styleClass="ui-noborder" id="gridcreate" columns="1" cellpadding="5">
+
+            <h:outputLabel for="name" value="Name:"/>
+            <p:inputText id="name" label="Name" required="true" value="#{employeeController.name}">
+                <f:validateLength minimum="2" maximum="30"/>
+            </p:inputText>
+
+            <h:outputLabel for="gender" value="Gender:"/>
+            <p:selectOneRadio id="gender" value="#{employeeController.gender}" unselectable="true">
+                <f:selectItem itemLabel="Male" itemValue="0"/>
+                <f:selectItem itemLabel="Female" itemValue="1"/>
+            </p:selectOneRadio>
+
+            <h:outputLabel for="department" value="Department:"/>
+            <p:selectOneMenu id="department" value="#{employeeController.department}"
+                             converter="omnifaces.SelectItemsConverter">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{employeeController.departmentList}"
+                               var="department" itemValue="#{department}" itemLabel="#{department.name}"/>
+            </p:selectOneMenu>
+
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton value="Add Employee" update="gridcreate"
+                         actionListener="#{employeeController.createEmployee()}"/>
+
+        <br/><br/>
+
+        <p:dataTable reflow="true" rows="5" paginator="true" value="#{employeeController.getEmployeeList()}"
+                     var="employee"
+                     rowKey="#{employee.id}">
+
+
+            <p:column headerText="Name">
+                <h:outputText value="#{employee.name}"/>
+            </p:column>
+
+            <p:column headerText="Gender">
+                <h:outputText value="#{employee.gender}"/>
+            </p:column>
+
+            <p:column headerText="Department">
+                <h:outputText value="#{employee.department.name}"/>
+            </p:column>
+
+        </p:dataTable>
+
+
+    </h:form>
+
+</h:body>
+</html>
+
+
+
+
